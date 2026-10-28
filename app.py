@@ -2,10 +2,14 @@ import streamlit as st
 
 st.set_page_config(page_title="रेलवे परिचालन नियम क्विज़", page_icon="🚂", layout="centered")
 
-# 6 यूज़र्स का लॉगिन डेटाबेस (ID और पासवर्ड)
+# 6 यूज़र्स का लॉगिन डेटाबेस (अब सभी का पासवर्ड सिर्फ 1 है)
 USER_CREDENTIALS = {
-    "user1": "pass123", "user2": "rail456", "user3": "quiz789",
-    "user4": "arun001", "user5": "pass555", "user6": "rail999"
+    "user1": "1",
+    "user2": "1",
+    "user3": "1",
+    "user4": "1",
+    "user5": "1",
+    "user6": "1"
 }
 
 # 1 से 54 तक के चुनिंदा प्रश्न
@@ -23,7 +27,7 @@ QUESTIONS = [
     {"id": 11, "question": "अनुमोदित विशेष अनुदेश किसके द्वारा जारी किए जाते हैं?", "options": ["रेलवे बोर्ड", "महाप्रबंधक", "सी आर एस (CRS)", "मुख्य परिचालन प्रबंधक"], "correct": "सी आर एस (CRS)"},
     {"id": 12, "question": "क्या पॉइन्ट इन्डीकेटर एक सिगनल है?", "options": ["हाँ, यह एक स्थिर सिगनल है", "नहीं", "हाँ, रात के समय सिगनल है", "केवल शंटिंग सिगनल है"], "correct": "नहीं"},
     {"id": 13, "question": "रेलवे में कितने प्रकार के ब्लॉक स्टेशन होते हैं?", "options": ["3", "2", "4", "5"], "correct": "3"},
-    {"id": 14, "question": "जहाँ सड़क और रेलवे लाइन एक दूसरे को समान स्तर पर पार करती हैं, उस स्थान को क्या कहते हैं?", "options": ["ओवरब्रिज", "अंडरпас", "सबवे", "समपार (Level Crossing)"], "correct": "समपार (Level Crossing)"},
+    {"id": 14, "question": "जहाँ सड़क और रेलवे लाइन एक दूसरे को समान स्तर पर पार करती हैं, उस स्थान को क्या कहते हैं?", "options": ["OVERBRIDGE", "अंडरпас", "सबवे", "समपार (Level Crossing)"], "correct": "समपार (Level Crossing)"},
     {"id": 15, "question": "रात का समय कब से कब तक माना जाता है?", "options": ["शाम 8 बजे से सुबह 6 बजे तक", "सूर्योदय से सूर्यास्त तक", "सूर्यास्त से सूर्योदय तक", "रात 10 बजे से सुबह 5 बजे तक"], "correct": "सूर्यास्त से सूर्योदय तक"},
     {"id": 16, "question": "क्या ट्रेलिंग पॉइन्ट आती हुई गाड़ी की दिशा बदल सकता है?", "options": ["हाँ, गाड़ी के पहियों के दबाव से", "नहीं", "हाँ, विशेष अनुमति पर", "केवल मालगाड़ी के मामले में हाँ"], "correct": "नहीं"},
     {"id": 17, "question": "ब्लॉक सेक्शन में तूफान आ जाए, तो लोको पायलट गाड़ी को कहाँ खड़ी करेगा?", "options": ["सुरक्षित स्थान पर", "तुरंत बीच ट्रैक पर", "अगले स्टेशन के होम सिगनल पर", "पुल के ठीक ऊपर"], "correct": "सुरक्षित स्थान पर"},
@@ -41,8 +45,11 @@ if "quiz_submitted" not in st.session_state:
 
 if not st.session_state.logged_in:
     st.title("🚂 रेलवे परिचालन नियम - लॉगिन पोर्टल")
-    username_input = st.text_input("यूज़र आईडी (User ID)")
-    password_input = st.text_input("पासवर्ड (Password)", type="password")
+    
+    # .strip().lower() से स्पेस की गलती और छोटे-बड़े अक्षरों का झंझट खत्म हो जाएगा
+    username_input = st.text_input("यूज़र आईडी (User ID)").strip().lower()
+    password_input = st.text_input("पासवर्ड (Password)", type="password").strip()
+    
     if st.button("लॉगिन करें", use_container_width=True):
         if username_input in USER_CREDENTIALS and USER_CREDENTIALS[username_input] == password_input:
             st.session_state.logged_in = True
